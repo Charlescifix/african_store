@@ -54,3 +54,5 @@ with st.form("sales_form"):
                 st.error(f"❌ Error saving sale: {e}")
             finally:
                 session.close()
+
+

@@ -1,6 +1,6 @@
 from sqlalchemy.orm import Session
 from app.models import Sale, Expense
-from datetime import datetime
+from datetime import datetime, UTC
 
 # -----------------------------
 # 💰 SALES FUNCTIONS
@@ -30,7 +30,7 @@ def create_sale(
         total_sale=total_sale,
         cost=cost,
         profit=profit,
-        timestamp=timestamp or datetime.utcnow()
+        timestamp=timestamp or datetime.now(UTC)
     )
 
     session.add(sale)
@@ -63,7 +63,7 @@ def create_expense(
         expense_type=expense_type,
         amount=amount,
         description=description,
-        timestamp=timestamp or datetime.utcnow()
+        timestamp=timestamp or datetime.now(UTC)
     )
 
     session.add(expense)

@@ -44,10 +44,14 @@ st.markdown("""
 """, unsafe_allow_html=True)
 
 
-# Initialize session
+# Initialize session with better error handling
 @st.cache_resource
 def init_db_session():
-    return SessionLocal()
+    try:
+        return SessionLocal()
+    except Exception as e:
+        st.error(f"Database connection failed: {str(e)}")
+        st.stop()
 
 
 session = init_db_session()
@@ -74,7 +78,7 @@ with st.sidebar:
         with col2:
             end_date = st.date_input("End Date", value=datetime.now().date())
     else:
-        today = datetime.utcnow().date()
+        today = datetime.now().date()
         if date_range == "Today":
             start_date, end_date = today, today
         elif date_range == "Last 7 Days":
@@ -97,7 +101,7 @@ with st.sidebar:
 
 
 # Get data for selected period
-@st.cache_data(ttl=300)  # Cache for 5 minutes
+@st.cache_data(ttl=600)  # Cache for 10 minutes
 def get_dashboard_data(start_date, end_date):
     sales_data = get_sales_in_range(session, start_date, end_date)
     expenses_data = get_expenses_in_range(session, start_date, end_date)
@@ -445,4 +449,8 @@ with col3:
 st.markdown("---")
 st.markdown(f"*Last updated: {datetime.now().strftime('%Y-%m-%d %H:%M:%S')} | Data range: {start_date} to {end_date}*")
 
-session.close()
+# Properly close session
+try:
+    session.close()
+except Exception:
+    pass
