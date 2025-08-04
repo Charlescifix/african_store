@@ -349,7 +349,7 @@ with tab4:
             sales_display = []
             for s in recent_sales:
                 sales_display.append({
-                    'Time': s.timestamp.strftime('%m-%d %H:%M'),
+                    'Date': s.timestamp.strftime('%Y-%m-%d %H:%M'),
                     'Item': s.item_name,
                     'Category': s.category,
                     'Qty': s.quantity_sold,
@@ -368,7 +368,7 @@ with tab4:
             expenses_display = []
             for e in recent_expenses:
                 expenses_display.append({
-                    'Time': e.timestamp.strftime('%m-%d %H:%M'),
+                    'Date': e.timestamp.strftime('%Y-%m-%d %H:%M'),
                     'Type': e.expense_type,
                     'Amount': f"{e.amount:.2f} TRY",
                     'Description': e.description[:30] + "..." if e.description and len(
